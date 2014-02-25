@@ -68,7 +68,11 @@ public class PopulationQuery {
 	// argument 3: number of y-dimension buckets
 	// argument 4: -v1, -v2, -v3, -v4, or -v5
 	public static void main(String[] args) {
-		// FOR YOU
+		if (args.length != 4) {
+			System.out.println("Please input a file name, the number of x-dimension buckets, y dimension buckts and version flag");
+			System.exit(0);
+		} 
+		
 	}
 	
 }

@@ -6,6 +6,7 @@ public class CensusGroup {
 	public float realLatitude;
 	public float latitude;
 	public float longitude;
+	
 	public CensusGroup(int pop, float lat, float lon) {
 		population = pop;
 		realLatitude = lat;
