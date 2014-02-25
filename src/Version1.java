@@ -5,9 +5,11 @@ public class Version1 {
 	public static Rectangle preprocess(CensusData parsedData,
 			int columns, int rows) {
 		
-		float top = 0, bottom = 1000, left = 1000, right = 0;
+		// longitudes and latitudes will never get to 1000 or negative 1000
+		float top = -1000, bottom = 1000, left = 1000, right = -1000;
 		
-		for (CensusGroup oneGroup : parsedData.data) {
+		for (int i = 0; i < parsedData.data_size; i++) {
+			CensusGroup oneGroup = parsedData.data[i];
 			top = Math.max(oneGroup.latitude, top);
 			bottom = Math.min(oneGroup.latitude, bottom);
 			left = Math.max(oneGroup.longitude, left);
