@@ -93,7 +93,6 @@ public class PopulationQuery {
 			int east = s.nextInt();
 			int north = s.nextInt();
 		}
->>>>>>> 0f544be803c42dc013c123eed27ae7f2d35101bf
 	}
 	
 }
