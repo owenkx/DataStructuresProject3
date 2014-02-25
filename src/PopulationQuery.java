@@ -2,6 +2,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class PopulationQuery {
 	// next four constants are relevant to parsing
@@ -60,6 +61,11 @@ public class PopulationQuery {
 	public static void preprocess(String filename, int columns, int rows,
 			int versionNum) {
 		
+		CensusData parsedData = parse(filename);
+		if (versionNum == 1) {
+			PopulationRectangle usa = Version1.preprocess(parsedData, columns, rows);
+		}
+		
 	}
 	
 
@@ -69,10 +75,25 @@ public class PopulationQuery {
 	// argument 4: -v1, -v2, -v3, -v4, or -v5
 	public static void main(String[] args) {
 		if (args.length != 4) {
-			System.out.println("Please input a file name, the number of x-dimension buckets, y dimension buckts and version flag");
-			System.exit(0);
-		} 
+			System.err.println("USAGE: --argument 1: file name for input data: pass this to parse \n "
+					+ "--argument 2: number of x-dimension buckets "
+					+ "--argument 3: number of y-dimension buckets "
+					+ "--argument 4: -v1, -v2, -v3, -v4, or -v5");
+			System.exit(1);
+		}
 		
+		preprocess(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+				Integer.parseInt(Character.toString(args[3].charAt(1))));
+		
+		Scanner s = new Scanner(System.in);
+		while (true) {
+			System.out.println("Please give west, south, east, north coordinates of your query rectangle: ");
+			int west = s.nextInt();
+			int south = s.nextInt();
+			int east = s.nextInt();
+			int north = s.nextInt();
+		}
+>>>>>>> 0f544be803c42dc013c123eed27ae7f2d35101bf
 	}
 	
 }
