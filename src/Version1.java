@@ -2,7 +2,7 @@
 public class Version1 {
 
 
-	public static PopulationRectangle preprocess(CensusData parsedData,
+	public static Rectangle preprocess(CensusData parsedData,
 			int columns, int rows) {
 		
 		float top = 0, bottom = 1000, left = 1000, right = 0;
@@ -14,7 +14,7 @@ public class Version1 {
 			right = Math.min(oneGroup.longitude, right);
 		}
 		
-		return new PopulationRectangle(left, top, right, bottom);
+		return new Rectangle(left, right, top, bottom);
 	}
 	
 }

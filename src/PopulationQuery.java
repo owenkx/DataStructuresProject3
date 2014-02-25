@@ -63,7 +63,7 @@ public class PopulationQuery {
 		
 		CensusData parsedData = parse(filename);
 		if (versionNum == 1) {
-			PopulationRectangle usa = Version1.preprocess(parsedData, columns, rows);
+			Rectangle usa = Version1.preprocess(parsedData, columns, rows);
 		}
 		
 	}
