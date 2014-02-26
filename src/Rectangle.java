@@ -8,13 +8,22 @@ public class Rectangle {
 	public float right;
 	public float top;
 	public float bottom;
+	public int population;
+	
 	
 	public Rectangle(float l, float r, float t, float b) {
+		this(l, r, t, b, 0);
+	}
+	
+	public Rectangle(float l, float r, float t, float b, int pop) {
 		left   = l;
 		right  = r;
 		top    = t;
 		bottom = b;
+		population = pop;
 	}
+	
+	
 	
 	// a functional operation: returns a new Rectangle that is the smallest rectangle
 	// containing this and that
