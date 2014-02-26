@@ -10,6 +10,7 @@ public class PopulationQuery {
 	public static final int POPULATION_INDEX = 4; // zero-based indices
 	public static final int LATITUDE_INDEX   = 5;
 	public static final int LONGITUDE_INDEX  = 6;
+	public static Version processor;
 	
 	// parse the input file into a large array held in a CensusData object
 	public static CensusData parse(String filename) {
@@ -53,19 +54,22 @@ public class PopulationQuery {
         return result;
 	}
 	
+	//Returns the total population and percentage of total population in 
+	//the query area.
 	public static Pair<Integer, Float> singleInteraction(int w, int s, int e,
 			int n) {
-		return null;
+		return processor.singleInteraction(w, s, e, n);
 	}
 	
+	//Sets up the query processor based on argument
 	public static void preprocess(String filename, int columns, int rows,
 			int versionNum) {
-		
 		CensusData parsedData = parse(filename);
 		if (versionNum == 1) {
-			Rectangle usa = Version1.preprocess(parsedData, columns, rows);
+			processor = new Version1(parsedData, columns, rows);
+		} else if (versionNum == 2) {
+			processor = new Version2(parsedData, columns, rows);
 		}
-		
 	}
 	
 
@@ -83,16 +87,42 @@ public class PopulationQuery {
 		}
 		
 		preprocess(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),
-				Integer.parseInt(Character.toString(args[3].charAt(1))));
+			Integer.parseInt(Character.toString(args[3].charAt(2))));
 		
 		Scanner s = new Scanner(System.in);
 		while (true) {
 			System.out.println("Please give west, south, east, north coordinates of your query rectangle: ");
-			int west = s.nextInt();
-			int south = s.nextInt();
-			int east = s.nextInt();
-			int north = s.nextInt();
+			
+			// Get input
+			String input = s.nextLine();
+			
+			// Check if of the form num num num num
+			if (!input.matches("^\\d+\\s\\d+\\s\\d+\\s\\d+$")) {
+				break;
+			} 
+			
+			// Split input into constituent parts
+			Scanner numSplitter = new Scanner(input);
+			int west = numSplitter.nextInt();
+			int south = numSplitter.nextInt();
+			int east = numSplitter.nextInt();
+			int north = numSplitter.nextInt();
+			numSplitter.close();
+	
+			//If invalid input
+			if (west < 1 || west > Integer.parseInt(args[1]) ||
+					south < 1 || south > Integer.parseInt(args[2]) ||
+					east < west || east > Integer.parseInt(args[1]) ||
+					north < south || north > Integer.parseInt(args[2])) {
+				System.out.println("fail");
+				break;
+			}
+					
+			// And finally, execute
+			// 0 based indexing
+			Pair<Integer, Float> results = singleInteraction(west - 1, south - 1, east - 1, north - 1);
+			System.out.println("population of rectangle: " + results.getElementA());
+			System.out.println("percent of total population: " + String.format("%.2f", results.getElementB()));
 		}
 	}
-	
 }
