@@ -18,8 +18,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-
-
 public class USMaps{
 	enum Version { ONE, TWO, THREE, FOUR, FIVE };
 	static Version running = Version.ONE;

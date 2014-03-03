@@ -2,13 +2,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 
-public class Version2 implements Version {
+public class Version2 extends Version {
 	public ForkJoinPool fjPool = new ForkJoinPool();
-	private Rectangle usa;
-	private CensusData popData;
-	private int columns;
-	private int rows;
-	
+
 	public Version2(CensusData parsedData, int columns, int rows) {
 		this.usa = fjPool.invoke(new CornerThread(parsedData, 0, parsedData.data_size));
 		this.columns = columns;

@@ -1,10 +1,4 @@
-
-public class Version1 implements Version {
-
-	private Rectangle usa;
-	private CensusData popData;
-	private int columns;
-	private int rows;
+public class Version1 extends Version {
 	private int totalPop;
 	
 	public Version1(CensusData parsedData,
@@ -31,7 +25,6 @@ public class Version1 implements Version {
 		
 		this.popData = parsedData;
 		this.usa = new Rectangle(left, right, top, bottom);
-
 	}
 
 	//Takes in a set of coordinates and returns the total population in the block as well as the
@@ -48,23 +41,4 @@ public class Version1 implements Version {
 		}
 		return new Pair(queryPop, 100 * (float) queryPop / totalPop);
 	}
-
-	//Takes in a longitude and returns a x coordinate in the grid
-	public int getXPos(float lon) {
-		// first, get distance from west
-		float distanceFromWest = lon - usa.left;
-		float columnWidth = (usa.right - usa.left) / this.columns;
-		int column = (int) (distanceFromWest / columnWidth);
-		return Math.min(columns - 1, column);
-	}
-
-	//Takes in a latitude and returns a y coordinate in the grid
-	public int getYPos(float lat) {
-		// first, get distance from west
-		float distanceFromSouth = lat - usa.bottom;
-		float rowLength = (usa.top - usa.bottom) / this.rows;
-		int row = (int) (distanceFromSouth / rowLength);
-		return Math.min(rows - 1, row);
-	}
-	
 }
