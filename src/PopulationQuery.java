@@ -63,11 +63,18 @@ public class PopulationQuery {
 	//Sets up the query processor based on argument
 	public static void preprocess(String filename, int columns, int rows,
 			int versionNum) {
+		if (columns < 1 || rows < 1) {
+			throw new IllegalArgumentException("Columns, Rows must be positive integers");
+		}
 		CensusData parsedData = parse(filename);
 		if (versionNum == 1) {
 			processor = new Version1(parsedData, columns, rows);
 		} else if (versionNum == 2) {
 			processor = new Version2(parsedData, columns, rows);
+		} else if (versionNum == 3) {
+			processor = new Version3(parsedData, columns, rows);
+		} else if (versionNum == 4) {
+			processor = new Version4(parsedData, columns, rows);
 		}
 	}
 
