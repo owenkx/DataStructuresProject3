@@ -44,23 +44,9 @@ public class Version4 extends Version {
 	@Override
 	public Pair<Integer, Float> singleInteraction(int w, int s, int e, int n) {
 
-		// swap north and south because coordinates
-		// and array indices are inverted
-		int temp = s;
-		s = n;
-		n = temp;
-
-		int queryPop = grid[e][s];
-		if (inGrid(e, n - 1)) { queryPop -= grid[e][n + 1]; }
-		if (inGrid(w - 1, s)) { queryPop -= grid[w - 1][s]; }
-		if (inGrid(w - 1, n - 1)) { queryPop += grid[w - 1][n + 1]; }
-
-		return new Pair<Integer, Float>(queryPop, (float) queryPop / usa.population * 100);
+		return singleInteractionSmart(w, s, e, n, grid);
 	}
 
-	private boolean inGrid(int x, int y) {
-		return x < columns && x >= 0 && y < rows && y >= 1; 
-	}
 
 	private class GridThread extends RecursiveTask<int[][]> {
 		int hi, lo;
@@ -129,7 +115,6 @@ public class Version4 extends Version {
 					return leftGrid;
 				}
 			}
-
 		}
 	}
 }

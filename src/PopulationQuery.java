@@ -75,6 +75,10 @@ public class PopulationQuery {
 			processor = new Version3(parsedData, columns, rows);
 		} else if (versionNum == 4) {
 			processor = new Version4(parsedData, columns, rows);
+		} else if (versionNum == 5) {
+			processor = new Version5(parsedData, columns, rows);
+		} else {
+			throw new IllegalArgumentException();
 		}
 	}
 
