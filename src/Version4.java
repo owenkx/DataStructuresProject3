@@ -1,8 +1,7 @@
 import java.util.Arrays;
 import java.util.concurrent.RecursiveTask;
 
-public class Version4 extends Version {
-	public int[][] grid;
+public class Version4 extends SmartVersion {
 
 	public Version4(CensusData parsedData, int columns, int rows) {
 		this.columns = columns;
@@ -11,42 +10,13 @@ public class Version4 extends Version {
 		this.usa = getUsaParallel();
 		grid = fjPool.invoke(new GridThread(0, popData.data_size));
 
-		// compute the smart grid
-		// first, we set the top row
-		int workingCount = 0;
-		for (int i = 0; i < this.columns; i++) {
-			workingCount += grid[i][0];
-			grid[i][0] = workingCount;
-		}
-
-		// Next, we compute the first column
-		workingCount = 0;
-		for (int i = 0; i < this.rows; i++) {
-			workingCount += grid[0][i];
-			grid[0][i] = workingCount;
-		}
-
-		// Now we compute the rest of the smart array
-		// We iterate first by row, then within each row by column
-		for (int row = 1; row < this.rows; row++) {
-			for (int col = 1; col < this.columns; col++) {
-
-				// The value in this grid spot is the sum of the two adjacent
-				// (top, left) and original, minus the value above and to the left
-				grid[col][row] = grid[col][row] + grid[col - 1][row] + 
-						grid[col][row - 1] - grid[col-1][row - 1];
-			}
-		}
-
-		// Boom! Grid now is a populated smart grid
+		makeSmartGrid(grid);
 	}
 
 	@Override
 	public Pair<Integer, Float> singleInteraction(int w, int s, int e, int n) {
-
 		return singleInteractionSmart(w, s, e, n, grid);
 	}
-
 
 	private class GridThread extends RecursiveTask<int[][]> {
 		int hi, lo;
