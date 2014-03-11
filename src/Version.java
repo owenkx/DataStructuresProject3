@@ -16,7 +16,7 @@ public abstract class Version {
 		float distanceFromWest = lon - usa.left;
 		float columnWidth = (usa.right - usa.left) / this.columns;
 		int column = (int) (distanceFromWest / columnWidth);
-		return Math.min(columns - 1, column);
+		return (column != columns) ? column : column - 1;
 	}
 
 	//Takes in a latitude and returns a y coordinate in the grid
@@ -25,7 +25,7 @@ public abstract class Version {
 		float distanceFromSouth = lat - usa.bottom;
 		float rowLength = (usa.top - usa.bottom) / this.rows;
 		int row = (int) (distanceFromSouth / rowLength);
-		return Math.min(rows - 1, row);
+		return (row != rows) ? row : row - 1;
 	}
 
 	protected Rectangle getUsaSequential() {
