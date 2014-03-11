@@ -1,8 +1,16 @@
-import java.util.Arrays;
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * Version4 is a subclass of SmartVersion (and thus, Version) that relies on smart and parallel algoirthsms 
+ *
+ */
 public class Version4 extends SmartVersion {
 
+	/** Create a new Version4
+	 * @param parsedData the CensusData to analyze
+	 * @param columns the number of columns to model
+	 * @param rows the number of rows to model
+	 */
 	public Version4(CensusData parsedData, int columns, int rows) {
 		this.columns = columns;
 		this.rows = rows;
@@ -13,17 +21,21 @@ public class Version4 extends SmartVersion {
 		makeSmartGrid(grid);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Float> singleInteraction(int w, int s, int e, int n) {
 		return singleInteractionSmart(w, s, e, n, grid);
 	}
 
+	// Private class for recursively computing the smart grid
 	private class GridThread extends RecursiveTask<int[][]> {
+		private static final long serialVersionUID = 1L;
 		int hi, lo;
 		int[][] grid;
 		private final int CUTOFF = 1000;
 
 
+		// Takes the smallest and highest values of censudGroups to analyze
 		public GridThread(int lo, int hi){
 			this.lo = lo;
 			this.hi = hi;
@@ -33,16 +45,18 @@ public class Version4 extends SmartVersion {
 		@Override
 		protected int[][] compute() {
 			if (hi - lo < CUTOFF) {
+				// If close together, manually fill the grid
 				for (int i = lo; i < hi; i++) {
 					CensusGroup oneGroup = popData.data[i];
 					int col = getXPos(oneGroup.longitude); 
-					int row = getYPos(oneGroup.realLatitude);
+					int row = getYPos(oneGroup.latitude);
 					int pop = oneGroup.population;
 					
 					grid[col][row] += pop;
 				}
 				return this.grid;
 			} else {
+				// Otherwise, compute the grid in two threads, combine and return
 				GridThread leftThread = new GridThread(lo, (lo + hi) / 2);
 				GridThread rightThread = new GridThread((lo + hi) / 2, hi);
 				leftThread.fork();
@@ -52,7 +66,9 @@ public class Version4 extends SmartVersion {
 			}
 		}
 
+		// Private class: uses for summing togther grids
 		private class sumThread extends RecursiveTask<int[][]> {
+			private static final long serialVersionUID = 1L;
 			int hi, lo;
 			int[][] grid1, grid2;
 			private final int CUTOFF = 50;

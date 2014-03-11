@@ -1,8 +1,16 @@
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-
+/** 
+ * Version2 is a subclass of Version1 that uses naive but parallel algorithms 
+ *
+ */
 public class Version2 extends Version {
+	
+	/** Create a new Version2
+	 * @param parsedData the CensusData to analyze
+	 * @param columns the number of columns to model
+	 * @param rows the number of rows to model
+	 */
 	public Version2(CensusData parsedData, int columns, int rows) {
 		this.columns = columns;
 		this.rows = rows;
@@ -10,16 +18,17 @@ public class Version2 extends Version {
 		this.usa = getUsaParallel();
 	}
 
-	//Takes in a set of coordinates and returns the total population in the block as well as the
-	//percentage of the total population that exists in the query block.
+	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Float> singleInteraction(int w, int s, int e, int n) {
 		int queryPop = fjPool.invoke(new QueryThread(0, popData.data_size, w, s, e, n));
-		return new Pair(queryPop, 100 * (float) queryPop / usa.population);
+		return new Pair<Integer, Float>(queryPop, 100 * (float) queryPop / usa.population);
 	}
 	
 	//Used to sum the populations in the query block, returns the population in the block
 	private class QueryThread extends RecursiveTask<Integer> {
+
+		private static final long serialVersionUID = 1L;
 		private final int CUTOFF = 100;
 		private int lo;
 		private int hi;
@@ -42,7 +51,7 @@ public class Version2 extends Version {
 				int queryPop = 0;
 				for (int i = lo; i < hi; i++) {
 					CensusGroup oneGroup = popData.data[i];
-					int row = getYPos(oneGroup.realLatitude);
+					int row = getYPos(oneGroup.latitude);
 					int col = getXPos(oneGroup.longitude);
 					if (row >= s && row <= n && col <= e && col >= w) {
 						queryPop += oneGroup.population;
@@ -60,8 +69,5 @@ public class Version2 extends Version {
 				return leftPop + rightPop;
 			}
 		}
-		
-	
 	}
-
 }

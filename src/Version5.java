@@ -1,11 +1,20 @@
+/**
+ * A version5 is a subclass of SmartVersion, and thus a subclass of Version
+ * It uses both smart and parallel algorithms 
+ */
 public class Version5 extends SmartVersion {
-
+	
+	// number of threads to compute with 
 	private static final int NUM_THREADS = 4;
 
 	// stores the population of each rectangle
 	private Object[][] locks;
 
-
+	/** Create a new Version1
+	 * @param parsedData the CensusData to analyze
+	 * @param columns the number of columns to model
+	 * @param rows the number of rows to model
+	 */
 	public Version5(CensusData parsedData, int columns, int rows) {
 		// store passed info
 		this.columns = columns;
@@ -45,11 +54,13 @@ public class Version5 extends SmartVersion {
 		makeSmartGrid(grid);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Float> singleInteraction(int w, int s, int e, int n) {
 		return singleInteractionSmart(w, s, e, n, grid);
 	}
 
+	// Private class used to create first stage of smart grid
 	private class BuildGridThread extends Thread {
 
 		private int lo, hi;
@@ -67,7 +78,7 @@ public class Version5 extends SmartVersion {
 				// Get the current censusdata
 				CensusGroup oneGroup = popData.data[i];
 				int col = getXPos(oneGroup.longitude);
-				int row = getYPos(oneGroup.realLatitude);
+				int row = getYPos(oneGroup.latitude);
 				
 				synchronized (lockGrid[col][row]) {
 					grid[col][row] += oneGroup.population;

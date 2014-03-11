@@ -1,6 +1,3 @@
-/.classpath
-/.project
-/.settings
 /CensusData.class
 /CensusGroup.class
 /InteractionPane$1.class
@@ -42,5 +39,7 @@
 /Version4$GridThread$sumThread.class
 /Version4$GridThread.class
 /Version4.class
-/Version5.class
 /Version5$BuildGridThread.class
+/Version5.class
+/SmartVersion.class
+/TestVersion.class

@@ -1,8 +1,17 @@
+/**
+ * SmartVersion is a subclss of Version that holds code used for dealing with "smart grids":
+ * grids where each square holds the total population of everything above and to the left of
+ * that cell 
+ */
 
 public abstract class SmartVersion extends Version {
+	
+	/** Holds the smart grid */
 	protected int[][] grid;
 
-	// takes in a grid and makes it a "smart grid", allowing population access in O(1)
+	/**  takes in a grid and makes it a "smart grid", allowing population access in O(1)
+	 * @param grid The grid to load the smart grid into
+	 */
 	public void makeSmartGrid(int[][] grid) {
 		// compute the smart grid
 		// first, we set the top row
@@ -34,6 +43,17 @@ public abstract class SmartVersion extends Version {
 		// Boom! Grid now is a populated smart grid
 	}
 
+	/**
+	 * Returns the population and percentage of the USA within a certain grid
+	 * Uses a smart grid
+	 * @param w The western most column (0 based index) to consider
+	 * @param s The southern most column (0 based index) to consider
+	 * @param e The eastern most column (0 based index) to consider
+	 * @param n The north most column (0 based index) to consider
+	 * @param grid the smart grid to consider
+	 * @return A pair holding the population within given rectangle, as well as that
+	 * 	       as percentage of USA
+	 */
 	public Pair<Integer, Float> singleInteractionSmart(int w, int s, int e, int n, int[][] grid) {
 		// swap north and south because coordinates
 		// and array indices are inverted
@@ -49,6 +69,7 @@ public abstract class SmartVersion extends Version {
 		return new Pair<Integer, Float>(queryPop, (float) queryPop / usa.population * 100);
 	}
 
+	// returns true iff. the given coordinate is within the grid
 	private boolean inGrid(int x, int y) {
 		return x < columns && x >= 0 && y < rows && y >= 1; 
 	}
