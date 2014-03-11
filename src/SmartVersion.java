@@ -42,9 +42,9 @@ public abstract class SmartVersion extends Version {
 		n = temp;
 
 		int queryPop = grid[e][s];
-		if (inGrid(e, n - 1)) { queryPop -= grid[e][n + 1]; }
+		if (inGrid(e, n - 1)) { queryPop -= grid[e][n - 1]; }
 		if (inGrid(w - 1, s)) { queryPop -= grid[w - 1][s]; }
-		if (inGrid(w - 1, n - 1)) { queryPop += grid[w - 1][n + 1]; }
+		if (inGrid(w - 1, n - 1)) { queryPop += grid[w - 1][n - 1]; }
 
 		return new Pair<Integer, Float>(queryPop, (float) queryPop / usa.population * 100);
 	}
