@@ -13,6 +13,9 @@ public abstract class Version {
 	// holds a representation of the USA, inclding boundaries and total population
 	protected Rectangle usa;
 	
+	// the cutoff for parallel processing the US's corners
+	public static final int CUTOFF = 2;
+	
 	// Holds the provided censusdata
 	protected CensusData popData;
 	
@@ -20,7 +23,7 @@ public abstract class Version {
 	protected int columns;
 	protected int rows;
 	
-	// used for parallism
+	// used for parallelism
 	protected ForkJoinPool fjPool = new ForkJoinPool();
 
 	/**
@@ -87,7 +90,6 @@ public abstract class Version {
 	private class CornerThread extends RecursiveTask<Rectangle> {
 
 		private static final long serialVersionUID = 1L;
-		private final int CUTOFF = 1000;
 		private Rectangle subRectangle;
 		private int lo;
 		private int hi;
